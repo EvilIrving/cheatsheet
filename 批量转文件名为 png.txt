@@ -1,1 +1,4 @@
 for file in *.*; do mv "$file" "${file%.*}.png"; done
+
+
+解释一下代码
