@@ -1,0 +1,10 @@
+clang-format
+cocoapods
+ffmpeg
+gcc
+git
+pipx
+tree
+uv
+yt-dlp
+zlib

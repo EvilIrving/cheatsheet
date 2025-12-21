@@ -1,0 +1,5 @@
+android-commandlinetools
+android-platform-tools
+android-studio
+localsend
+swiftformat-for-xcode

@@ -1,0 +1,5 @@
+homebrew/cask
+homebrew/core
+kylef/formulae
+qoderai/qoder
+tgotwig/vidmerger

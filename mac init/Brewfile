@@ -1,0 +1,59 @@
+tap "homebrew/cask"
+tap "homebrew/core"
+tap "kylef/formulae"
+tap "qoderai/qoder"
+tap "tgotwig/vidmerger"
+# New file format for still image compression
+brew "jpeg-xl"
+# Codec library for encoding and decoding AV1 video streams
+brew "aom"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
+# Core application library for C
+brew "glib"
+# Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
+brew "clang-format"
+# Powerful, clean, object-oriented scripting language
+brew "ruby"
+# Dependency manager for Cocoa projects
+brew "cocoapods"
+# Library to load and enumerate PKCS#11 modules
+brew "p11-kit"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# OpenType text shaping engine
+brew "harfbuzz"
+# Subtitle renderer for the ASS/SSA subtitle format
+brew "libass"
+# C library SSHv1/SSHv2 client and server protocols
+brew "libssh"
+# Framework for layout and rendering of i18n text
+brew "pango"
+# OCR (Optical Character Recognition) engine
+brew "tesseract"
+# Play, record, convert, and stream audio and video
+brew "ffmpeg"
+# GNU compiler collection
+brew "gcc"
+# Distributed revision control system
+brew "git"
+# Execute binaries from Python packages in isolated environments
+brew "pipx"
+# Display directories as trees (with optional color/HTML output)
+brew "tree"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
+# General-purpose lossless data-compression library
+brew "zlib"
+# Command-line tools for building and debugging Android apps
+cask "android-commandlinetools"
+# Android SDK component
+cask "android-platform-tools"
+# Tools for building Android applications
+cask "android-studio"
+# Open-source cross-platform alternative to AirDrop
+cask "localsend"
+# Xcode Extension for reformatting Swift code
+cask "swiftformat-for-xcode"
