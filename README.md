@@ -1,28 +1,106 @@
-
 # somebash
 
-一个 Bash 脚本工具集合项目。
+> 个人常用脚本工具集 - Bash / Python / JavaScript
 
-## 项目简介
+## 项目结构
 
-somebash 是一个用于存放和管理 Bash 脚本的项目，旨在提供实用的命令行工具和自动化脚本。
+```
+somebash/
+├── mac/                # macOS 系统初始化配置
+├── media/              # 音视频处理工具
+├── scraper/            # 数据爬取脚本
+└── file-utils/         # 文件处理工具
+```
 
-## 功能特性
+---
 
-- 提供常用的 Bash 脚本工具
-- 易于扩展和维护
+## mac/ - macOS 系统初始化
 
-## 使用说明
+macOS 新机/重装后的完整配置方案。
 
-根据具体脚本的功能，赋予执行权限后即可使用：
+| 文件 | 说明 |
+|------|------|
+| `init.sh` | 交互式一键初始化脚本 |
+| `macos-setup-guide.md` | 详细配置指南文档 |
+| `Brewfile` | Homebrew 软件清单 |
+| `brew-formulae.txt` | brew formulae 列表 |
+| `brew-taps.txt` | brew taps 列表 |
+| `vscode-extensions.txt` | VSCode 扩展列表 |
 
-chmod +x script_name.sh
-./script_name.sh
+**使用方法:**
 
-## 贡献指南
+```bash
+cd mac
+chmod +x init.sh
+./init.sh
+```
 
-欢迎提交 Issue 和 Pull Request 来完善这个项目。
+---
 
-## 许可证
+## media/ - 音视频处理工具
 
-本项目采用 MIT 许可证。
+| 文件 | 说明 |
+|------|------|
+| `batch-fix-metadata.sh` | 批量修复视频元数据 (FFmpeg) |
+| `merge-video-guide.md` | 视频合并压缩命令指南 |
+| `xiaoyuzhou-downloader.js` | 小宇宙播客音频下载 (Tampermonkey) |
+
+**视频元数据修复:**
+
+```bash
+cd media
+chmod +x batch-fix-metadata.sh
+./batch-fix-metadata.sh
+```
+
+**小宇宙下载器:** 在 Tampermonkey 中安装 `xiaoyuzhou-downloader.js` 脚本。
+
+---
+
+## scraper/ - 数据爬取脚本
+
+| 文件 | 说明 |
+|------|------|
+| `zhipin-job-scraper.py` | Boss直聘招聘信息爬虫 |
+| `json-writer.py` | JSON 文件写入工具 |
+
+**使用方法:**
+
+```bash
+cd scraper
+python zhipin-job-scraper.py
+```
+
+---
+
+## file-utils/ - 文件处理工具
+
+| 文件 | 说明 |
+|------|------|
+| `batch-rename-ext.sh` | 批量重命名文件扩展名 |
+
+**使用方法:**
+
+```bash
+cd file-utils
+chmod +x batch-rename-ext.sh
+
+# 将当前目录所有文件扩展名改为 .png
+./batch-rename-ext.sh png
+
+# 改为 .jpg
+./batch-rename-ext.sh jpg
+```
+
+---
+
+## 依赖要求
+
+- **Shell 脚本**: Bash / Zsh
+- **Python 脚本**: Python 3.x, requests
+- **视频处理**: FFmpeg
+- **浏览器脚本**: Tampermonkey
+
+## License
+
+MIT
