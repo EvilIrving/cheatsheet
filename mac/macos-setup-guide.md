@@ -97,6 +97,16 @@ killall Dock
 
 ### 2.5 Menu Bar Spacing Settings
 
+**Reference**: https://tinyapps.org/blog/reduce-menubar-spacing.html
+
+**Minimal spacing** (most compact):
+```sh
+defaults -currentHost write -globalDomain NSStatusItemSpacing -int 0 && \
+defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 0 && \
+killall ControlCenter
+```
+
+**Custom spacing** (balanced):
 ```sh
 # Adjust menu bar spacing constant (smaller value = more compact items)
 defaults -currentHost write -globalDomain NSStatusItemSpacing -int 10
@@ -105,6 +115,13 @@ defaults -currentHost write -globalDomain NSStatusItemSpacing -int 10
 defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 3
 
 # Restart ControlCenter to apply changes
+killall ControlCenter
+```
+
+**Restore default spacing**:
+```sh
+defaults -currentHost delete -globalDomain NSStatusItemSpacing && \
+defaults -currentHost delete -globalDomain NSStatusItemSelectionPadding && \
 killall ControlCenter
 ```
 
