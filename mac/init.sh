@@ -1,11 +1,11 @@
 #!/bin/zsh
-# macOS 系统初始化脚本
-# 基于 mac 初始化.md 文档实现
-# 用法: chmod +x init.sh && ./init.sh
+# macOS System Initialization Script
+# Based on macos-setup-guide.md documentation
+# Usage: chmod +x init.sh && ./init.sh
 
 set -e
 
-# ==================== 颜色定义 ====================
+# ==================== Color Definitions ====================
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -14,7 +14,7 @@ PURPLE='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# ==================== 工具函数 ====================
+# ==================== Utility Functions ====================
 print_header() {
     echo ""
     echo "${PURPLE}============================================${NC}"
@@ -58,366 +58,366 @@ confirm() {
 
 press_enter() {
     echo ""
-    echo -n "${CYAN}按 Enter 键继续...${NC}"
+    echo -n "${CYAN}Press Enter to continue...${NC}"
     read -r
 }
 
-# ==================== 检查函数 ====================
+# ==================== Check Functions ====================
 check_network() {
-    print_info "检查网络连接..."
+    print_info "Checking network connectivity..."
     if curl -s --connect-timeout 5 https://github.com > /dev/null 2>&1; then
-        print_success "网络连接正常"
+        print_success "Network connection is OK"
         return 0
     else
-        print_warning "无法连接到 GitHub，请检查网络或代理设置"
+        print_warning "Cannot connect to GitHub. Please check your network or proxy settings."
         return 1
     fi
 }
 
 check_homebrew() {
     if command -v brew &> /dev/null; then
-        print_success "Homebrew 已安装"
+        print_success "Homebrew is already installed"
         return 0
     else
-        print_warning "Homebrew 未安装"
+        print_warning "Homebrew is not installed"
         return 1
     fi
 }
 
-# ==================== 安装 Homebrew ====================
+# ==================== Install Homebrew ====================
 install_homebrew() {
-    print_header "安装 Homebrew"
+    print_header "Installing Homebrew"
     
     if check_homebrew; then
-        print_info "跳过 Homebrew 安装"
+        print_info "Skipping Homebrew installation"
         return 0
     fi
     
-    if confirm "是否安装 Homebrew?" "y"; then
-        print_info "正在安装 Homebrew..."
+    if confirm "Install Homebrew?" "y"; then
+        print_info "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         
-        # 添加 Homebrew 到 PATH (Apple Silicon Mac)
+        # Add Homebrew to PATH (Apple Silicon Mac)
         if [[ -f "/opt/homebrew/bin/brew" ]]; then
             echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
             eval "$(/opt/homebrew/bin/brew shellenv)"
         fi
         
-        print_success "Homebrew 安装完成"
+        print_success "Homebrew installation completed"
     else
-        print_info "跳过 Homebrew 安装"
+        print_info "Skipping Homebrew installation"
     fi
 }
 
-# ==================== 系统设置 ====================
+# ==================== System Settings ====================
 configure_mouse() {
-    print_header "鼠标设置"
+    print_header "Mouse Settings"
     
-    print_info "当前鼠标速度: $(defaults read -g com.apple.mouse.scaling 2>/dev/null || echo '默认')"
-    print_info "当前滚动速度: $(defaults read -g com.apple.scrollwheel.scaling 2>/dev/null || echo '默认')"
+    print_info "Current mouse speed: $(defaults read -g com.apple.mouse.scaling 2>/dev/null || echo 'default')"
+    print_info "Current scroll speed: $(defaults read -g com.apple.scrollwheel.scaling 2>/dev/null || echo 'default')"
     
-    if confirm "是否优化鼠标设置? (移动速度: 2.6, 滚动速度: 1.2)" "y"; then
+    if confirm "Optimize mouse settings? (movement: 2.6, scroll: 1.2)" "y"; then
         defaults write -g com.apple.mouse.scaling 2.6
         defaults write -g com.apple.scrollwheel.scaling 1.2
-        print_success "鼠标设置已更新 (需重启生效)"
+        print_success "Mouse settings updated (restart required)"
     fi
 }
 
 configure_keyboard() {
-    print_header "键盘设置"
+    print_header "Keyboard Settings"
     
-    print_info "当前按键重复频率: $(defaults read -g KeyRepeat 2>/dev/null || echo '默认')"
-    print_info "当前重复前延迟: $(defaults read -g InitialKeyRepeat 2>/dev/null || echo '默认')"
+    print_info "Current key repeat rate: $(defaults read -g KeyRepeat 2>/dev/null || echo 'default')"
+    print_info "Current initial repeat delay: $(defaults read -g InitialKeyRepeat 2>/dev/null || echo 'default')"
     
-    if confirm "是否优化键盘设置? (重复频率: 1, 延迟: 10)" "y"; then
+    if confirm "Optimize keyboard settings? (repeat rate: 1, delay: 10)" "y"; then
         defaults write -g KeyRepeat -int 1
         defaults write -g InitialKeyRepeat -int 10
-        print_success "键盘设置已更新 (需重启生效)"
+        print_success "Keyboard settings updated (restart required)"
     fi
 }
 
 configure_finder() {
-    print_header "Finder 访达设置"
+    print_header "Finder Settings"
     
-    if confirm "是否显示隐藏文件?" "n"; then
+    if confirm "Show hidden files?" "n"; then
         defaults write com.apple.finder AppleShowAllFiles -bool true
-        print_success "已设置显示隐藏文件"
+        print_success "Hidden files will be shown"
     fi
     
-    if confirm "是否禁用 .DS_Store 文件生成?" "y"; then
+    if confirm "Disable .DS_Store file generation?" "y"; then
         defaults write com.apple.desktopservices DSDontWriteStores -bool true
         defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
         defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-        print_success "已禁用 .DS_Store 文件生成"
+        print_success ".DS_Store file generation disabled"
     fi
     
     killall Finder 2>/dev/null || true
-    print_info "Finder 已重启"
+    print_info "Finder restarted"
 }
 
 configure_dock() {
-    print_header "Dock 设置"
+    print_header "Dock Settings"
     
-    if confirm "是否隐藏 Dock 中的'最近使用的应用'?" "y"; then
+    if confirm "Hide 'Recent Applications' in Dock?" "y"; then
         defaults write com.apple.dock show-recents -bool false
         killall Dock
-        print_success "已隐藏最近使用的应用"
+        print_success "Recent applications hidden"
     fi
 }
 
 configure_menubar() {
-    print_header "菜单栏间距设置"
+    print_header "Menu Bar Spacing Settings"
     
-    print_info "当前菜单栏间距设置:"
-    print_info "  间距宽度: $(defaults -currentHost read -globalDomain NSStatusItemSpacing 2>/dev/null || echo '默认')"
-    print_info "  选择填充: $(defaults -currentHost read -globalDomain NSStatusItemSelectionPadding 2>/dev/null || echo '默认')"
+    print_info "Current menu bar spacing settings:"
+    print_info "  Spacing width: $(defaults -currentHost read -globalDomain NSStatusItemSpacing 2>/dev/null || echo 'default')"
+    print_info "  Selection padding: $(defaults -currentHost read -globalDomain NSStatusItemSelectionPadding 2>/dev/null || echo 'default')"
     
-    if confirm "是否优化菜单栏间距? (间距: 10, 选择填充: 3)" "y"; then
+    if confirm "Optimize menu bar spacing? (spacing: 10, padding: 3)" "y"; then
         defaults -currentHost write -globalDomain NSStatusItemSpacing -int 10
         defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 3
         killall ControlCenter
-        print_success "菜单栏间距已更新 (已重启 ControlCenter)"
+        print_success "Menu bar spacing updated (ControlCenter restarted)"
     fi
 }
 
 configure_other_system() {
-    print_header "其他系统设置"
+    print_header "Other System Settings"
     
-    if confirm "是否关闭听写功能?" "y"; then
+    if confirm "Disable Dictation?" "y"; then
         defaults write com.apple.assistant.support "Dictation Enabled" -bool false
-        print_success "已关闭听写功能"
+        print_success "Dictation disabled"
     fi
 }
 
 configure_spotlight() {
-    print_header "Spotlight 索引管理"
+    print_header "Spotlight Index Management"
     
-    print_info "当前 Spotlight 状态:"
-    mdutil -s / 2>/dev/null || echo "无法获取状态"
+    print_info "Current Spotlight status:"
+    mdutil -s / 2>/dev/null || echo "Unable to get status"
     
-    if confirm "是否关闭 Spotlight 索引? (可节省系统资源)" "n"; then
-        print_warning "此操作需要管理员权限"
+    if confirm "Disable Spotlight indexing? (saves system resources)" "n"; then
+        print_warning "This operation requires administrator privileges"
         sudo mdutil -a -i off
-        print_success "已关闭 Spotlight 索引"
+        print_success "Spotlight indexing disabled"
         
-        if confirm "是否清除现有索引数据?" "n"; then
+        if confirm "Clear existing index data?" "n"; then
             sudo mdutil -a -E
-            print_success "已清除索引数据"
+            print_success "Index data cleared"
         fi
     fi
 }
 
-# ==================== 软件安装 ====================
+# ==================== Software Installation ====================
 install_formulae() {
-    print_header "安装 Brew Formulae (终端工具)"
+    print_header "Installing Brew Formulae (Terminal Tools)"
     
     local formulae=("fnm" "git" "pnpm" "tw93/tap/mole" "tree")
     
-    print_info "将安装以下终端工具:"
+    print_info "The following terminal tools will be installed:"
     for pkg in "${formulae[@]}"; do
         echo "  - $pkg"
     done
     
-    if confirm "是否继续安装?" "y"; then
+    if confirm "Continue installation?" "y"; then
         for pkg in "${formulae[@]}"; do
             if brew list "$pkg" &>/dev/null; then
-                print_info "$pkg 已安装，跳过"
+                print_info "$pkg already installed, skipping"
             else
-                print_info "正在安装 $pkg..."
-                brew install "$pkg" && print_success "$pkg 安装成功" || print_error "$pkg 安装失败"
+                print_info "Installing $pkg..."
+                brew install "$pkg" && print_success "$pkg installed successfully" || print_error "$pkg installation failed"
             fi
         done
     fi
 }
 
 install_casks() {
-    print_header "安装 Brew Casks (图形应用)"
+    print_header "Installing Brew Casks (GUI Applications)"
     
     local casks=("google-chrome" "visual-studio-code" "iterm2" "orbstack" "maccy" "keka")
     
-    print_info "将安装以下图形应用:"
+    print_info "The following GUI applications will be installed:"
     for app in "${casks[@]}"; do
         echo "  - $app"
     done
     
-    if confirm "是否继续安装?" "y"; then
+    if confirm "Continue installation?" "y"; then
         for app in "${casks[@]}"; do
             if brew list --cask "$app" &>/dev/null; then
-                print_info "$app 已安装，跳过"
+                print_info "$app already installed, skipping"
             else
-                print_info "正在安装 $app..."
-                brew install --cask "$app" && print_success "$app 安装成功" || print_error "$app 安装失败"
+                print_info "Installing $app..."
+                brew install --cask "$app" && print_success "$app installed successfully" || print_error "$app installation failed"
             fi
         done
     fi
 }
 
 show_manual_apps() {
-    print_header "需要手动下载的应用"
+    print_header "Applications Requiring Manual Installation"
     
-    print_info "以下应用需要手动下载安装:"
-    echo "  - 微信"
+    print_info "The following applications need to be downloaded and installed manually:"
+    echo "  - WeChat"
     echo "  - Qoder"
     echo "  - RunCat"
     echo "  - Lemon Cleaner"
-    echo "  - ClashVerge (代理工具)"
+    echo "  - ClashVerge (Proxy tool)"
     
     press_enter
 }
 
-# ==================== 开发环境配置 ====================
+# ==================== Development Environment ====================
 configure_fnm() {
-    print_header "配置 fnm (Node.js 版本管理)"
+    print_header "Configuring fnm (Node.js Version Manager)"
     
     if ! command -v fnm &> /dev/null; then
-        print_warning "fnm 未安装，请先安装 fnm"
+        print_warning "fnm is not installed. Please install fnm first."
         return 1
     fi
     
-    # 检查是否已配置
+    # Check if already configured
     if grep -q 'fnm env' ~/.zshrc 2>/dev/null; then
-        print_info "fnm 环境已配置"
+        print_info "fnm environment already configured"
     else
-        if confirm "是否将 fnm 环境添加到 ~/.zshrc?" "y"; then
+        if confirm "Add fnm environment to ~/.zshrc?" "y"; then
             echo 'eval "$(fnm env)"' >> ~/.zshrc
-            print_success "fnm 环境已添加到 ~/.zshrc"
+            print_success "fnm environment added to ~/.zshrc"
         fi
     fi
     
-    # 安装 Node.js
-    if confirm "是否安装 Node.js 24?" "y"; then
-        print_info "正在安装 Node.js 24..."
+    # Install Node.js
+    if confirm "Install Node.js 24?" "y"; then
+        print_info "Installing Node.js 24..."
         fnm install 24
         fnm use 24
-        print_success "Node.js $(node -v) 已安装并激活"
+        print_success "Node.js $(node -v) installed and activated"
     fi
 }
 
 configure_git() {
-    print_header "Git 配置"
+    print_header "Git Configuration"
     
     local current_name=$(git config --global user.name 2>/dev/null || echo "")
     local current_email=$(git config --global user.email 2>/dev/null || echo "")
     
     if [[ -n "$current_name" ]]; then
-        print_info "当前 Git 用户名: $current_name"
+        print_info "Current Git username: $current_name"
     fi
     if [[ -n "$current_email" ]]; then
-        print_info "当前 Git 邮箱: $current_email"
+        print_info "Current Git email: $current_email"
     fi
     
-    if confirm "是否配置 Git 用户信息?" "y"; then
-        echo -n "${CYAN}请输入用户名: ${NC}"
+    if confirm "Configure Git user information?" "y"; then
+        echo -n "${CYAN}Enter username: ${NC}"
         read -r git_name
-        echo -n "${CYAN}请输入邮箱: ${NC}"
+        echo -n "${CYAN}Enter email: ${NC}"
         read -r git_email
         
         if [[ -n "$git_name" ]]; then
             git config --global user.name "$git_name"
-            print_success "Git 用户名已设置: $git_name"
+            print_success "Git username set: $git_name"
         fi
         if [[ -n "$git_email" ]]; then
             git config --global user.email "$git_email"
-            print_success "Git 邮箱已设置: $git_email"
+            print_success "Git email set: $git_email"
         fi
     fi
 }
 
 configure_ssh() {
-    print_header "SSH 密钥配置"
+    print_header "SSH Key Configuration"
     
     if [[ -f ~/.ssh/id_rsa.pub ]]; then
-        print_info "SSH 密钥已存在"
-        if confirm "是否查看公钥?" "y"; then
+        print_info "SSH key already exists"
+        if confirm "View public key?" "y"; then
             echo ""
             cat ~/.ssh/id_rsa.pub
             echo ""
         fi
     else
-        if confirm "是否生成新的 SSH 密钥?" "y"; then
-            echo -n "${CYAN}请输入邮箱: ${NC}"
+        if confirm "Generate new SSH key?" "y"; then
+            echo -n "${CYAN}Enter email: ${NC}"
             read -r ssh_email
             
             if [[ -n "$ssh_email" ]]; then
                 ssh-keygen -t rsa -b 4096 -C "$ssh_email"
                 
-                # 启动 SSH 代理并添加密钥
+                # Start SSH agent and add key
                 eval "$(ssh-agent -s)"
                 ssh-add ~/.ssh/id_rsa
                 
-                print_success "SSH 密钥已生成"
+                print_success "SSH key generated"
                 
-                if confirm "是否复制公钥到剪贴板?" "y"; then
+                if confirm "Copy public key to clipboard?" "y"; then
                     pbcopy < ~/.ssh/id_rsa.pub
-                    print_success "公钥已复制到剪贴板，请粘贴到 GitHub Settings → SSH Keys"
+                    print_success "Public key copied to clipboard. Paste it at GitHub Settings → SSH Keys"
                 fi
             fi
         fi
     fi
     
-    if confirm "是否测试 GitHub SSH 连接?" "n"; then
-        print_info "测试 GitHub SSH 连接..."
+    if confirm "Test GitHub SSH connection?" "n"; then
+        print_info "Testing GitHub SSH connection..."
         ssh -T git@github.com 2>&1 || true
     fi
 }
 
-# ==================== 主菜单 ====================
+# ==================== Main Menu ====================
 show_menu() {
     clear
     echo ""
     echo "${PURPLE}╔════════════════════════════════════════════════════╗${NC}"
-    echo "${PURPLE}║       macOS 系统初始化脚本 v1.0                    ║${NC}"
+    echo "${PURPLE}║       macOS System Initialization v1.0             ║${NC}"
     echo "${PURPLE}╚════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo "${CYAN}请选择要执行的操作:${NC}"
+    echo "${CYAN}Please select an option:${NC}"
     echo ""
-    echo "  ${GREEN}[0]${NC} 🚀 一键全部配置"
+    echo "  ${GREEN}[0]${NC} 🚀 Configure Everything"
     echo ""
-    echo "  ${YELLOW}── 前置准备 ──${NC}"
-    echo "  ${GREEN}[1]${NC} 检查网络连接"
-    echo "  ${GREEN}[2]${NC} 安装 Homebrew"
+    echo "  ${YELLOW}── Prerequisites ──${NC}"
+    echo "  ${GREEN}[1]${NC} Check Network Connection"
+    echo "  ${GREEN}[2]${NC} Install Homebrew"
     echo ""
-    echo "  ${YELLOW}── 系统设置 ──${NC}"
-    echo "  ${GREEN}[3]${NC} 鼠标设置"
-    echo "  ${GREEN}[4]${NC} 键盘设置"
-    echo "  ${GREEN}[5]${NC} Finder 访达设置"
-    echo "  ${GREEN}[6]${NC} Dock 设置"
-    echo "  ${GREEN}[7]${NC} 菜单栏间距设置"
-    echo "  ${GREEN}[8]${NC} 其他系统设置"
-    echo "  ${GREEN}[9]${NC} Spotlight 索引管理"
+    echo "  ${YELLOW}── System Settings ──${NC}"
+    echo "  ${GREEN}[3]${NC} Mouse Settings"
+    echo "  ${GREEN}[4]${NC} Keyboard Settings"
+    echo "  ${GREEN}[5]${NC} Finder Settings"
+    echo "  ${GREEN}[6]${NC} Dock Settings"
+    echo "  ${GREEN}[7]${NC} Menu Bar Spacing Settings"
+    echo "  ${GREEN}[8]${NC} Other System Settings"
+    echo "  ${GREEN}[9]${NC} Spotlight Index Management"
     echo ""
-    echo "  ${YELLOW}── 软件安装 ──${NC}"
-    echo "  ${GREEN}[10]${NC} 安装 Brew Formulae (终端工具)"
-    echo "  ${GREEN}[11]${NC} 安装 Brew Casks (图形应用)"
-    echo "  ${GREEN}[12]${NC} 查看手动安装应用列表"
+    echo "  ${YELLOW}── Software Installation ──${NC}"
+    echo "  ${GREEN}[10]${NC} Install Brew Formulae (Terminal Tools)"
+    echo "  ${GREEN}[11]${NC} Install Brew Casks (GUI Applications)"
+    echo "  ${GREEN}[12]${NC} View Manual Installation List"
     echo ""
-    echo "  ${YELLOW}── 开发环境 ──${NC}"
-    echo "  ${GREEN}[13]${NC} 配置 fnm (Node.js)"
-    echo "  ${GREEN}[14]${NC} 配置 Git"
-    echo "  ${GREEN}[15]${NC} 配置 SSH 密鑁"
+    echo "  ${YELLOW}── Development Environment ──${NC}"
+    echo "  ${GREEN}[13]${NC} Configure fnm (Node.js)"
+    echo "  ${GREEN}[14]${NC} Configure Git"
+    echo "  ${GREEN}[15]${NC} Configure SSH Keys"
     echo ""
-    echo "  ${GREEN}[q]${NC} 退出"
+    echo "  ${GREEN}[q]${NC} Exit"
     echo ""
-    echo -n "${CYAN}请输入选项: ${NC}"
+    echo -n "${CYAN}Enter your choice: ${NC}"
 }
 
 run_all() {
-    print_header "开始一键全部配置"
+    print_header "Starting Full Configuration"
     
-    if ! confirm "确定要执行全部配置吗?" "n"; then
+    if ! confirm "Are you sure you want to configure everything?" "n"; then
         return
     fi
     
     check_network
     install_homebrew
     
-    # 检查 Homebrew 是否安装成功
+    # Check if Homebrew installation was successful
     if ! check_homebrew; then
-        print_error "Homebrew 未安装，无法继续"
+        print_error "Homebrew not installed, cannot continue"
         return 1
     fi
     
-    # 系统设置
+    # System settings
     configure_mouse
     configure_keyboard
     configure_finder
@@ -425,25 +425,25 @@ run_all() {
     configure_menubar
     configure_other_system
     
-    # 软件安装
+    # Software installation
     install_formulae
     install_casks
     show_manual_apps
     
-    # 开发环境
+    # Development environment
     configure_fnm
     configure_git
     configure_ssh
     
-    print_header "配置完成!"
-    print_warning "部分设置需要重启系统才能生效"
+    print_header "Configuration Completed!"
+    print_warning "Some settings require system restart to take effect"
 }
 
-# ==================== 主程序 ====================
+# ==================== Main Program ====================
 main() {
-    # 检查是否在 macOS 上运行
+    # Check if running on macOS
     if [[ "$(uname)" != "Darwin" ]]; then
-        print_error "此脚本仅支持 macOS 系统"
+        print_error "This script only supports macOS"
         exit 1
     fi
     
@@ -469,16 +469,16 @@ main() {
             14) configure_git; press_enter ;;
             15) configure_ssh; press_enter ;;
             q|Q) 
-                print_info "再见! 👋"
+                print_info "Goodbye! 👋"
                 exit 0 
                 ;;
             *)
-                print_error "无效选项，请重新选择"
+                print_error "Invalid option, please try again"
                 sleep 1
                 ;;
         esac
     done
 }
 
-# 运行主程序
+# Run main program
 main

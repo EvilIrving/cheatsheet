@@ -1,131 +1,131 @@
-# macOS 系统初始化指南
+# macOS System Setup Guide
 
-> 本文档记录 macOS 新机/重装后的完整配置流程
-> 配套脚本: `install.sh` (交互式一键配置)
-
----
-
-## 目录
-
-1. [前置准备](#1-前置准备)
-2. [系统设置优化](#2-系统设置优化)
-3. [软件安装](#3-软件安装)
-4. [开发环境配置](#4-开发环境配置)
-5. [其他设置](#5-其他设置)
+> This guide documents the complete macOS configuration process for fresh installation or system reset
+> Companion script: `init.sh` (Interactive one-click setup)
 
 ---
 
-## 1. 前置准备
+## Table of Contents
 
-### 1.1 基础操作（手动）
+1. [Prerequisites](#1-prerequisites)
+2. [System Optimization](#2-system-optimization)
+3. [Software Installation](#3-software-installation)
+4. [Development Environment](#4-development-environment)
+5. [Additional Settings](#5-additional-settings)
 
-- 开机登录 → 连接 WiFi → 登录 Apple 账号
+---
 
-### 1.2 网络代理（重要：确保后续下载不失败）
+## 1. Prerequisites
+
+### 1.1 Basic Setup (Manual)
+
+- Power on and login → Connect to WiFi → Sign in to Apple account
+
+### 1.2 Network Proxy (Important: Ensure downloads don't fail)
 
 ```sh
-# 下载 vivo 协作，用手机下载 ClashVerge 传输到 Mac
-# 安装后复制订阅链接，开启代理
+# Download proxy tool via mobile phone and transfer to Mac
+# Install ClashVerge and add subscription link to enable proxy
 
-# 测试网络连通性
+# Test network connectivity
 curl -I https://github.com
 ```
 
-### 1.3 安装 Homebrew
+### 1.3 Install Homebrew
 
 ```sh
-# macOS 包管理器，后续大部分软件通过它安装
+# macOS package manager - most software will be installed through it
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-# Homebrew 常用命令说明:
-# - cask: 图形应用 (GUI apps)
-# - formulae: 终端应用 (CLI tools)
-# - 常用: search | info | install | uninstall | list | cleanup | deps | update | upgrade | config
+# Common Homebrew commands:
+# - cask: GUI applications
+# - formulae: CLI tools
+# - Common: search | info | install | uninstall | list | cleanup | deps | update | upgrade | config
 ```
 
 ---
 
-## 2. 系统设置优化
+## 2. System Optimization
 
-### 2.1 鼠标设置
+### 2.1 Mouse Settings
 
 ```sh
-# 读取当前鼠标速度
+# Read current mouse speed
 defaults read -g com.apple.mouse.scaling
 
-# 设置鼠标移动速度 (范围 0-3，超过3更快，需重启生效)
+# Set mouse movement speed (range 0-3, >3 is faster, requires restart)
 defaults write -g com.apple.mouse.scaling 2.6
 
-# 设置鼠标滚动速度 (范围 0-1.7)
+# Set mouse scroll speed (range 0-1.7)
 defaults write -g com.apple.scrollwheel.scaling 1.2
 ```
 
-### 2.2 键盘设置
+### 2.2 Keyboard Settings
 
 ```sh
-# 按键重复频率 (范围 120-2，越小越快)
+# Key repeat rate (range 120-2, smaller = faster)
 defaults write -g KeyRepeat -int 1
 
-# 重复前延迟 (范围 120-15，越小响应越快)
+# Delay before repeat (range 120-15, smaller = more responsive)
 defaults write -g InitialKeyRepeat -int 10
 ```
 
-### 2.3 Finder 访达设置
+### 2.3 Finder Settings
 
 ```sh
-# 显示隐藏文件 (快捷键: Command + Shift + .)
+# Show hidden files (shortcut: Command + Shift + .)
 defaults write com.apple.finder AppleShowAllFiles -bool true
 
-# 隐藏隐藏文件
+# Hide hidden files
 defaults write com.apple.finder AppleShowAllFiles -bool false
 
-# 禁用 .DS_Store 文件生成
-defaults write com.apple.desktopservices DSDontWriteStores -bool true        # 本地文件夹
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true  # 网络文件夹
-defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true      # USB存储设备
+# Disable .DS_Store file generation
+defaults write com.apple.desktopservices DSDontWriteStores -bool true        # Local folders
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true  # Network folders
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true      # USB devices
 ```
 
-### 2.4 Dock 设置
+### 2.4 Dock Settings
 
 ```sh
-# 隐藏 Dock 中的"最近使用的应用"
+# Hide "Recent Applications" in Dock
 defaults write com.apple.dock show-recents -bool false
 
-# 重启 Dock 使设置生效
+# Restart Dock to apply changes
 killall Dock
 ```
 
-### 2.5 菜单栏间距设置
+### 2.5 Menu Bar Spacing Settings
 
 ```sh
-# 调整菜单栏间距常数 (较小的值 会使项目更紧凑)
+# Adjust menu bar spacing constant (smaller value = more compact items)
 defaults -currentHost write -globalDomain NSStatusItemSpacing -int 10
 
-# 调整选择填充 (较小的值 会减少选择区域)
+# Adjust selection padding (smaller value = reduced selection area)
 defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 3
 
-# 重启 ControlCenter 使设置生效
+# Restart ControlCenter to apply changes
 killall ControlCenter
 ```
 
-### 2.6 其他系统设置
+### 2.6 Other System Settings
 
 ```sh
-# 关闭听写功能
+# Disable Dictation
 defaults write com.apple.assistant.support "Dictation Enabled" -bool false
 ```
 
 ---
 
-## 3. 软件安装
+## 3. Software Installation
 
-### 3.1 Brew Formulae (终端工具)
+### 3.1 Brew Formulae (Terminal Tools)
 
 ```sh
 brew install fnm git pnpm mole tree
 ```
 
-### 3.2 Brew Casks (图形应用)
+### 3.2 Brew Casks (GUI Applications)
 
 ```sh
 brew install --cask \
@@ -138,75 +138,75 @@ brew install --cask \
   miaoyan
 ```
 
-### 3.3 手动下载安装
+### 3.3 Manual Installation
 
-- 微信
+- WeChat
 - Qoder
 - RunCat
 - Lemon Cleaner
-- ClashVerge (代理工具)
+- ClashVerge (Proxy tool)
 
 ---
 
-## 4. 开发环境配置
+## 4. Development Environment
 
-### 4.1 fnm (Node.js 版本管理)
+### 4.1 fnm (Node.js Version Manager)
 
 ```sh
-# 检查当前 Shell 类型
+# Check current shell type
 echo $SHELL
 
-# 添加 fnm 环境到 shell 配置文件
-# 如果文件不存在先创建: touch ~/.zshrc
+# Add fnm environment to shell config file
+# Create file if it doesn't exist: touch ~/.zshrc
 echo 'eval "$(fnm env)"' >> ~/.zshrc
 
-# 重新加载配置
+# Reload configuration
 source ~/.zshrc
 
-# 验证 fnm 环境
+# Verify fnm environment
 fnm env
 
-# 安装并使用 Node.js
+# Install and use Node.js
 fnm install 24
 fnm use 24
 ```
 
-### 4.2 Git 配置
+### 4.2 Git Configuration
 
 ```sh
-# 设置用户信息
-git config --global user.name "你的名字"
-git config --global user.email "你的邮箱"
+# Set user information
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
 ```
 
-### 4.3 SSH 密钥配置 (用于 GitHub 等)
+### 4.3 SSH Key Configuration (for GitHub, etc.)
 
 ```sh
-# 生成 SSH 密钥 (替换为你的邮箱)
+# Generate SSH key (replace with your email)
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 
-# 启动 SSH 代理并添加密钥
+# Start SSH agent and add key
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_rsa
 
-# 复制公钥到剪贴板 (粘贴到 GitHub Settings → SSH Keys)
+# Copy public key to clipboard (paste to GitHub Settings → SSH Keys)
 pbcopy < ~/.ssh/id_rsa.pub
 
-# 测试 GitHub SSH 连接
+# Test GitHub SSH connection
 ssh -T git@github.com
 ```
 
-## 5. 其他设置
+## 5. Additional Settings
 
-### 5.1 Spotlight 索引管理
+### 5.1 Spotlight Index Management
 
 ```sh
-# 关闭 Spotlight 索引 (节省资源)
+# Disable Spotlight indexing (saves system resources)
 sudo mdutil -a -i off
 
-# 清除索引数据
+# Clear existing index data
 sudo mdutil -a -E
 
-# 查看索引状态
+# View indexing status
 mdutil -s /
 ```
