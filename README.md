@@ -1,33 +1,33 @@
 # somebash
 
-> 个人常用脚本工具集 - Bash / Python / JavaScript
+> Personal collection of useful scripts - Bash / Python / JavaScript
 
-## 项目结构
+## Project Structure
 
 ```
 somebash/
-├── mac/                # macOS 系统初始化配置
-├── media/              # 音视频处理工具
-├── scraper/            # 数据爬取脚本
-└── file-utils/         # 文件处理工具
+├── mac/                # macOS system initialization setup
+├── media/              # Audio & video processing tools
+├── scraper/            # Data scraping scripts
+└── file-utils/         # File processing utilities
 ```
 
 ---
 
-## mac/ - macOS 系统初始化
+## mac/ - macOS System Initialization
 
-macOS 新机/重装后的完整配置方案。
+Complete configuration solution for macOS fresh installation or system reset.
 
-| 文件 | 说明 |
+| File | Description |
 |------|------|
-| `init.sh` | 交互式一键初始化脚本 |
-| `macos-setup-guide.md` | 详细配置指南文档 |
-| `Brewfile` | Homebrew 软件清单 |
-| `brew-formulae.txt` | brew formulae 列表 |
-| `brew-taps.txt` | brew taps 列表 |
-| `vscode-extensions.txt` | VSCode 扩展列表 |
+| `init.sh` | Interactive one-click initialization script |
+| `macos-setup-guide.md` | Detailed setup guide documentation |
+| `Brewfile` | Homebrew package manifest |
+| `brew-formulae.txt` | List of brew formulae |
+| `brew-taps.txt` | List of brew taps |
+| `vscode-extensions.txt` | List of VSCode extensions |
 
-**使用方法:**
+**Usage:**
 
 ```bash
 cd mac
@@ -37,15 +37,15 @@ chmod +x init.sh
 
 ---
 
-## media/ - 音视频处理工具
+## media/ - Audio & Video Processing Tools
 
-| 文件 | 说明 |
+| File | Description |
 |------|------|
-| `batch-fix-metadata.sh` | 批量修复视频元数据 (FFmpeg) |
-| `merge-video-guide.md` | 视频合并压缩命令指南 |
-| `xiaoyuzhou-downloader.js` | 小宇宙播客音频下载 (Tampermonkey) |
+| `batch-fix-metadata.sh` | Batch fix video metadata (FFmpeg) |
+| `merge-video-guide.md` | Video merge & compression command guide |
+| `xiaoyuzhou-downloader.js` | Xiaoyuzhou podcast audio downloader (Tampermonkey) |
 
-**视频元数据修复:**
+**Video metadata fix:**
 
 ```bash
 cd media
@@ -53,18 +53,18 @@ chmod +x batch-fix-metadata.sh
 ./batch-fix-metadata.sh
 ```
 
-**小宇宙下载器:** 在 Tampermonkey 中安装 `xiaoyuzhou-downloader.js` 脚本。
+**Xiaoyuzhou downloader:** Install `xiaoyuzhou-downloader.js` script in Tampermonkey.
 
 ---
 
-## scraper/ - 数据爬取脚本
+## scraper/ - Data Scraping Scripts
 
-| 文件 | 说明 |
+| File | Description |
 |------|------|
-| `zhipin-job-scraper.py` | Boss直聘招聘信息爬虫 |
-| `json-writer.py` | JSON 文件写入工具 |
+| `zhipin-job-scraper.py` | Boss Zhipin job posting scraper |
+| `json-writer.py` | JSON file writing utility |
 
-**使用方法:**
+**Usage:**
 
 ```bash
 cd scraper
@@ -73,33 +73,33 @@ python zhipin-job-scraper.py
 
 ---
 
-## file-utils/ - 文件处理工具
+## file-utils/ - File Processing Utilities
 
-| 文件 | 说明 |
+| File | Description |
 |------|------|
-| `batch-rename-ext.sh` | 批量重命名文件扩展名 |
+| `batch-rename-ext.sh` | Batch rename file extensions |
 
-**使用方法:**
+**Usage:**
 
 ```bash
 cd file-utils
 chmod +x batch-rename-ext.sh
 
-# 将当前目录所有文件扩展名改为 .png
+# Rename all files in current directory to .png
 ./batch-rename-ext.sh png
 
-# 改为 .jpg
+# Rename to .jpg
 ./batch-rename-ext.sh jpg
 ```
 
 ---
 
-## 依赖要求
+## Dependencies
 
-- **Shell 脚本**: Bash / Zsh
-- **Python 脚本**: Python 3.x, requests
-- **视频处理**: FFmpeg
-- **浏览器脚本**: Tampermonkey
+- **Shell scripts**: Bash / Zsh
+- **Python scripts**: Python 3.x, requests
+- **Video processing**: FFmpeg
+- **Browser scripts**: Tampermonkey
 
 ## License
 

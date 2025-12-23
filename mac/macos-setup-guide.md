@@ -95,7 +95,20 @@ defaults write com.apple.dock show-recents -bool false
 killall Dock
 ```
 
-### 2.5 其他系统设置
+### 2.5 菜单栏间距设置
+
+```sh
+# 调整菜单栏间距常数 (较小的值 会使项目更紧凑)
+defaults -currentHost write -globalDomain NSStatusItemSpacing -int 10
+
+# 调整选择填充 (较小的值 会减少选择区域)
+defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 3
+
+# 重启 ControlCenter 使设置生效
+killall ControlCenter
+```
+
+### 2.6 其他系统设置
 
 ```sh
 # 关闭听写功能

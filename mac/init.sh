@@ -165,6 +165,21 @@ configure_dock() {
     fi
 }
 
+configure_menubar() {
+    print_header "菜单栏间距设置"
+    
+    print_info "当前菜单栏间距设置:"
+    print_info "  间距宽度: $(defaults -currentHost read -globalDomain NSStatusItemSpacing 2>/dev/null || echo '默认')"
+    print_info "  选择填充: $(defaults -currentHost read -globalDomain NSStatusItemSelectionPadding 2>/dev/null || echo '默认')"
+    
+    if confirm "是否优化菜单栏间距? (间距: 10, 选择填充: 3)" "y"; then
+        defaults -currentHost write -globalDomain NSStatusItemSpacing -int 10
+        defaults -currentHost write -globalDomain NSStatusItemSelectionPadding -int 3
+        killall ControlCenter
+        print_success "菜单栏间距已更新 (已重启 ControlCenter)"
+    fi
+}
+
 configure_other_system() {
     print_header "其他系统设置"
     
@@ -367,18 +382,19 @@ show_menu() {
     echo "  ${GREEN}[4]${NC} 键盘设置"
     echo "  ${GREEN}[5]${NC} Finder 访达设置"
     echo "  ${GREEN}[6]${NC} Dock 设置"
-    echo "  ${GREEN}[7]${NC} 其他系统设置"
-    echo "  ${GREEN}[8]${NC} Spotlight 索引管理"
+    echo "  ${GREEN}[7]${NC} 菜单栏间距设置"
+    echo "  ${GREEN}[8]${NC} 其他系统设置"
+    echo "  ${GREEN}[9]${NC} Spotlight 索引管理"
     echo ""
     echo "  ${YELLOW}── 软件安装 ──${NC}"
-    echo "  ${GREEN}[9]${NC} 安装 Brew Formulae (终端工具)"
-    echo "  ${GREEN}[10]${NC} 安装 Brew Casks (图形应用)"
-    echo "  ${GREEN}[11]${NC} 查看手动安装应用列表"
+    echo "  ${GREEN}[10]${NC} 安装 Brew Formulae (终端工具)"
+    echo "  ${GREEN}[11]${NC} 安装 Brew Casks (图形应用)"
+    echo "  ${GREEN}[12]${NC} 查看手动安装应用列表"
     echo ""
     echo "  ${YELLOW}── 开发环境 ──${NC}"
-    echo "  ${GREEN}[12]${NC} 配置 fnm (Node.js)"
-    echo "  ${GREEN}[13]${NC} 配置 Git"
-    echo "  ${GREEN}[14]${NC} 配置 SSH 密钥"
+    echo "  ${GREEN}[13]${NC} 配置 fnm (Node.js)"
+    echo "  ${GREEN}[14]${NC} 配置 Git"
+    echo "  ${GREEN}[15]${NC} 配置 SSH 密鑁"
     echo ""
     echo "  ${GREEN}[q]${NC} 退出"
     echo ""
@@ -406,6 +422,7 @@ run_all() {
     configure_keyboard
     configure_finder
     configure_dock
+    configure_menubar
     configure_other_system
     
     # 软件安装
@@ -442,14 +459,15 @@ main() {
             4) configure_keyboard; press_enter ;;
             5) configure_finder; press_enter ;;
             6) configure_dock; press_enter ;;
-            7) configure_other_system; press_enter ;;
-            8) configure_spotlight; press_enter ;;
-            9) install_formulae; press_enter ;;
-            10) install_casks; press_enter ;;
-            11) show_manual_apps ;;
-            12) configure_fnm; press_enter ;;
-            13) configure_git; press_enter ;;
-            14) configure_ssh; press_enter ;;
+            7) configure_menubar; press_enter ;;
+            8) configure_other_system; press_enter ;;
+            9) configure_spotlight; press_enter ;;
+            10) install_formulae; press_enter ;;
+            11) install_casks; press_enter ;;
+            12) show_manual_apps ;;
+            13) configure_fnm; press_enter ;;
+            14) configure_git; press_enter ;;
+            15) configure_ssh; press_enter ;;
             q|Q) 
                 print_info "再见! 👋"
                 exit 0 
