@@ -153,6 +153,7 @@ brew install --cask \
   maccy \
   keka \
   miaoyan
+  squirrel-app
 ```
 
 ### 3.3 Manual Installation

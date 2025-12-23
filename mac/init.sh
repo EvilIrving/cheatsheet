@@ -233,7 +233,7 @@ install_formulae() {
 install_casks() {
     print_header "Installing Brew Casks (GUI Applications)"
     
-    local casks=("google-chrome" "visual-studio-code" "iterm2" "orbstack" "maccy" "keka")
+    local casks=("google-chrome" "visual-studio-code" "iterm2" "orbstack" "maccy" "keka" "squirrel-app")
     
     print_info "The following GUI applications will be installed:"
     for app in "${casks[@]}"; do
