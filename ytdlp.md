@@ -131,3 +131,44 @@ yt-dlp --embed-thumbnail --audio-format mp3 -x "https://www.youtube.com/watch?v=
 | `--audio-quality` | 音频质量 (0-9 或 Kbps) |
 | `--embed-thumbnail` | 嵌入封面图 |
 | `--add-metadata` | 添加元数据 |
+
+## 使用浏览器 Cookie 下载会员视频
+
+有些视频需要登录或会员才能观看，可以使用浏览器 Cookie 来认证：
+
+```bash
+# 从 Chrome 读取 Cookie
+yt-dlp --cookies-from-browser chrome "https://www.youtube.com/watch?v=VIDEO_ID"
+
+# 从 Firefox 读取 Cookie
+yt-dlp --cookies-from-browser firefox "https://www.youtube.com/watch?v=VIDEO_ID"
+
+# 从 Safari 读取 Cookie
+yt-dlp --cookies-from-browser safari "https://www.youtube.com/watch?v=VIDEO_ID"
+```
+
+### 常用参数组合
+
+```bash
+# 下载视频并嵌入字幕，保存到指定目录
+yt-dlp --cookies-from-browser chrome --embed-subs -o "~/Downloads/%(title)s.%(ext)s" "URL"
+
+# 下载最佳画质+音质，合并为 MKV
+yt-dlp --cookies-from-browser chrome -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best" --merge-output-format mkv "URL"
+
+# 下载音频并嵌入封面
+yt-dlp --cookies-from-browser chrome -x --audio-format mp3 --embed-thumbnail "URL"
+```
+
+### 浏览器 Cookie 优先级
+
+如果同时有多个浏览器登录，建议按以下顺序使用：
+1. `chrome` - 最常用，Cookie 最完整
+2. `firefox` - Firefox 用户使用
+3. `safari` - macOS 用户可用
+
+### 注意事项
+
+- 确保浏览器已登录 YouTube
+- 观看视频前先在浏览器中打开一次
+- Cookie 可能会过期，需要定期刷新
