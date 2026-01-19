@@ -217,7 +217,7 @@ def download_audio(url: str, output_dir: str = "./downloads") -> str:
     return audio_path
 
 
-def transcribe_media(media_path: str, model: str = "small", language: str = None) -> str:
+def transcribe_media(media_path: str, model: str = "medium", language: str = None) -> str:
     """
     使用 conda 环境中的 whisper 转写
     支持视频和音频文件（whisper 通过 ffmpeg 自动处理）
@@ -488,4 +488,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\n👋 已取消操作")
+        sys.exit(130)
